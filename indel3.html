@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Modern Animated Navbar</title>
+  <style>
+    /* ফন্ট ও বডি স্টাইল */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+    }
+
+    /* Navbar container */
+    .navbar {
+      background-color: #1f2937; /* ডার্ক গ্রে */
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      user-select: none;
+    }
+
+    /* Navbar লিঙ্ক স্টাইল */
+    .navbar a {
+      position: relative;
+      color: #cbd5e1; /* হালকা ধূসর */
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 20px;
+      padding: 10px 0;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    /* হোভার ইফেক্ট */
+    .navbar a:hover {
+      color: #2ec1c9;
+    }
+
+    /* Active লিঙ্কের জন্য */
+    .navbar a.active {
+      color: #2ec1c9;
+      font-weight: 700;
+    }
+
+    /* নিচে বর্ডার এনিমেশন */
+    .navbar a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 3px;
+      left: 50%;
+      bottom: 0;
+      background-color: #2ec1c9;
+      transition: width 0.3s ease, left 0.3s ease;
+      border-radius: 3px;
+    }
+
+    /* হোভার করলে নিচের বর্ডার বারবে */
+    .navbar a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Active লিঙ্কের বর্ডার */
+    .navbar a.active::after {
+      width: 100%;
+      left: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="#ai" class="active">AI Engineering</a>
+    <a href="#web">Web Development</a>
+    <a href="#app">App Development</a>
+    <a href="#graphic">Graphic Design</a>
+    <a href="#video">Video Editing</a>
+    <a href="#audio">Audio Editing</a>
+  </div>
+
+  <script>
+    const navLinks = document.querySelectorAll(".navbar a");
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        navLinks.forEach(lnk => lnk.classList.remove("active"));
+        this.classList.add("active");
+
+        const targetId = this.getAttribute("href").substring(1);
+        const targetSection = document.getElementById(targetId);
+        if(targetSection) {
+          targetSection.scrollIntoView({behavior: "smooth"});
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

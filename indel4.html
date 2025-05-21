@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YouTube Playlist Viewer</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f7fa;
+    }
+
+    .navbarproject {
+      background-color: #1f2937;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      user-select: none;
+      flex-wrap: wrap;
+    }
+
+    .navbarproject a {
+      position: relative;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 15px;
+      padding: 10px 0;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .navbarproject a:hover {
+      color: #2ec1c9;
+    }
+
+    .navbarproject a.active {
+      color: #2ec1c9;
+      font-weight: 700;
+    }
+
+    .navbarproject a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 3px;
+      left: 50%;
+      bottom: 0;
+      background-color: #2ec1c9;
+      transition: width 0.3s ease, left 0.3s ease;
+      border-radius: 3px;
+    }
+
+    .navbarproject a:hover::after,
+    .navbarproject a.active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    #videos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .video {
+      width: 300px;
+    }
+
+    .video iframe {
+      width: 100%;
+      height: 170px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .video p {
+      margin: 5px 0;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 30px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbarproject">
+    <a href="#" data-playlist="PL33LO8rJz1j5jpCDYoByzjqWHXBUgneHT" class="active">AI Engineering</a>
+    <a href="#" data-playlist="PLEWeMUL-7fcO-ovt7hB4Z2rW9__flM0QI">Web Development</a>
+    <a href="#" data-playlist="PL_gW2I2bgC9FApFLDKgxd5UfNIo46OVQ_">App Development</a>
+    <a href="#" data-playlist="PLF7Euc1iW20h2nX7OP5RKK4Ets5fQvlzn">Graphic Design</a>
+    <a href="#" data-playlist="PLBDD3EAA97C2B1F14">Video Editing</a>
+    <a href="#" data-playlist="PLxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">Audio Editing</a>
+  </div>
+
+  <h2>ক্লিক করা ক্যাটাগরির ভিডিওসমূহ</h2>
+  <div id="videos">Loading...</div>
+
+  <script>
+    const apiKey = 'AIzaSyAxMeZ5ubFiHn3-R_keMOLOajhRNFt1YB4'; // এখানে তোমার YouTube API Key বসাও
+    const navLinks = document.querySelectorAll(".navbarproject a");
+    const videoContainer = document.getElementById("videos");
+
+    function loadVideos(playlistId) {
+      videoContainer.innerHTML = 'Loading...';
+      fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=20&playlistId=${playlistId}&key=${apiKey}`)
+        .then(res => res.json())
+        .then(data => {
+          videoContainer.innerHTML = '';
+          data.items.forEach(item => {
+            const videoId = item.snippet.resourceId.videoId;
+            const title = item.snippet.title;
+
+            const div = document.createElement('div');
+            div.className = 'video';
+            div.innerHTML = `
+              <iframe src="https://www.youtube.com/embed/${videoId}" 
+                      title="${title}" 
+                      frameborder="0" 
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                      allowfullscreen></iframe>
+              <p>${title}</p>
+            `;
+            videoContainer.appendChild(div);
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          videoContainer.innerHTML = 'ভিডিও লোড করা যায়নি।';
+        });
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+
+        navLinks.forEach(lnk => lnk.classList.remove("active"));
+        this.classList.add("active");
+
+        const playlistId = this.dataset.playlist;
+        loadVideos(playlistId);
+      });
+    });
+
+    // প্রথমবার পেজ লোড হলে প্রথম ক্যাটাগরির ভিডিও দেখাও
+    loadVideos(navLinks[0].dataset.playlist);
+  </script>
+
+</body>
+</html>

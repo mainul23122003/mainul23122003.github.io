@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Playlist Video Viewer</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+    #videos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .video {
+      width: 300px;
+    }
+    .video img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .video p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+<h2>My YouTube Playlist Videos</h2>
+<div id="videos">Loading...</div>
+
+<script>
+  const apiKey = 'AIzaSyAxMeZ5ubFiHn3-R_keMOLOajhRNFt1YB4'; // এখানে তোমার API Key বসাও
+  const playlistId = 'PL33LO8rJz1j5jpCDYoByzjqWHXBUgneHT'; // তোমার Playlist ID
+
+  fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=6&playlistId=${playlistId}&key=${apiKey}`)
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('videos');
+      container.innerHTML = '';
+      data.items.forEach(item => {
+        const videoId = item.snippet.resourceId.videoId;
+        const title = item.snippet.title;
+        const thumbnail = item.snippet.thumbnails.medium.url;
+
+        const div = document.createElement('div');
+        div.classList.add('video');
+        div.innerHTML = `
+          <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">
+            <img src="${thumbnail}" alt="${title}">
+          </a>
+          <p>${title}</p>
+        `;
+        container.appendChild(div);
+      });
+    })
+    .catch(error => {
+      console.error('Error loading videos:', error);
+      document.getElementById('videos').innerText = 'Failed to load videos.';
+    });
+</script>
+
+</body>
+</html>
