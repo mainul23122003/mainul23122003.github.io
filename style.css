@@ -522,8 +522,8 @@ body {
 .progress-line span::after {
     position: absolute;
     padding: 1px 8px;
-    background-color: #000;
-    color: #fff;
+    background-color: #0072fd;
+    color: #ffffff;
     font-size: 12px;
     border-radius: 3px;
     top: -28px;
@@ -661,7 +661,7 @@ body {
     border: 7px solid transparent;
     border-bottom-width: 0px;
     border-right-width: 0px;
-    border-top-color: #000;
+    border-top-color: #0072fd;
     top: -10px;
     right: 0;
     animation: showText 0.5s 1.5s linear forwards;
