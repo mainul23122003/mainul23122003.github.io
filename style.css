@@ -1666,7 +1666,7 @@ body {
 @media (max-width: 400px) {
     body {
         overflow-x: hidden;
-        background-color: #ff0000;
+        background-color: #000;
         padding-right: -15vw;
     }
 
@@ -1706,13 +1706,13 @@ body {
         align-items: center;
         min-height: auto;
         position: relative;
-        background-color: coral;
+        background-color: #000;
     }
 
     .home-content {
         max-width: 100%;
         text-align: center;
-        background-color: darkviolet;
+        background-color: #000;
     }
 
    .home-content h3 {
