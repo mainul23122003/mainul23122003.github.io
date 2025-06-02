@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mainul23122003.github.io/sitemap.xml
